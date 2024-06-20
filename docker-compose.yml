@@ -1,9 +1,7 @@
 version: '3'
 services:
   server:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: phx_sqlite_sync:1.7
     environment:
       DB_HOST: db
     links:
@@ -17,9 +15,7 @@ services:
     # command: "elixir --sname server@web --cookie server -S mix phx.server"
 
   device_a:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: phx_sqlite_sync:1.7
     ports:
       - 4002:4000
     volumes:
@@ -28,9 +24,7 @@ services:
     command: "tail -f /dev/null"
 
   # device_b:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
+  #   image: phx_sqlite_sync:1.7
   #   ports:
   #     - 4003:4000
   #   volumes:

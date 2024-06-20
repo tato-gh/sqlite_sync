@@ -1,0 +1,53 @@
+version: '3'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: db
+    links:
+      - db
+    ports:
+      - 4001:4000
+    volumes:
+      - ./server:/work
+    working_dir: /work
+    command: "tail -f /dev/null"
+    # command: "elixir --sname server@web --cookie server -S mix phx.server"
+
+  device_a:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4002:4000
+    volumes:
+      - ./device:/work
+    working_dir: /work
+    command: "tail -f /dev/null"
+
+  # device_b:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 4003:4000
+  #   volumes:
+  #     - device:/work
+  #   working_dir: /work
+  #   command: "tail -f /dev/null"
+
+  db:
+    image: postgres:15.3-alpine
+    shm_size: 512m
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+volumes:
+  dbdata:
+

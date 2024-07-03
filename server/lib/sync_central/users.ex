@@ -39,6 +39,14 @@ defmodule SyncCentral.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Registers a user.
+  """
+  def register_user(email, access_key) do
+    hashed_value = Argon2.hash_pwd_salt(access_key)
+    Repo.insert(%User{email: email, hashed_access_key: hashed_value})
+  end
+
+  @doc """
   Creates a new api token for a user.
 
   The token returned must be saved somewhere safe.

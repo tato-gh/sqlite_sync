@@ -4,17 +4,20 @@ defmodule SyncCentral.UsersFixtures do
   entities via the `SyncCentral.Users` context.
   """
 
+  alias SyncCentral.Repo
+  alias SyncCentral.Users.User
+
   @doc """
   Generate a user.
   """
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
-      attrs
-      |> Enum.into(%{
+      %User{
         email: "some email",
-        hashed_password: "some hashed_password"
-      })
-      |> SyncCentral.Users.create_user()
+        hashed_access_key: "some hashed_access_key"
+      }
+      |> Map.merge(attrs)
+      |> Repo.insert()
 
     user
   end

@@ -8,7 +8,7 @@ defmodule SyncCentral.Repo.Migrations.CreateUsers do
       add :email, :citext, null: false
       add :hashed_access_key, :string, null: false
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create unique_index(:users, [:email])
@@ -18,7 +18,7 @@ defmodule SyncCentral.Repo.Migrations.CreateUsers do
       add :token, :binary, null: false
       add :context, :string, null: false
 
-      timestamps(updated_at: false)
+      timestamps(type: :utc_datetime, updated_at: false)
     end
 
     create index(:users_tokens, [:user_id])

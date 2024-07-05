@@ -4,8 +4,8 @@ defmodule SyncCentral.Users do
   """
 
   import Ecto.Query, warn: false
-  alias SyncCentral.Repo
 
+  alias SyncCentral.Repo
   alias SyncCentral.Users.User
   alias SyncCentral.Users.UserToken
 

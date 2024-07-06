@@ -1,6 +1,8 @@
 defmodule SyncCentralWeb.Router do
   use SyncCentralWeb, :router
 
+  import SyncCentralWeb.UserAuth
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -12,6 +14,7 @@ defmodule SyncCentralWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_api_user
   end
 
   scope "/", SyncCentralWeb do
@@ -21,13 +24,17 @@ defmodule SyncCentralWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", SyncCentralWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", SyncCentralWeb.API do
+    pipe_through :api
+
+    scope "/share", Share do
+      resources "/transactions", TransactionController, only: [:create]
+    end
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:sync_central, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
+    # If you want to use the LiveDashboard in production, you shojld put
     # it behind authentication and allow only admins to access it.
     # If your application does not have an admins-only section yet,
     # you can use Plug.BasicAuth to set up some basic authentication

@@ -60,7 +60,9 @@ defmodule SyncCentral.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       # Utils
-      {:argon2_elixir, "~> 4.0"}
+      {:argon2_elixir, "~> 4.0"},
+      # Tests
+      {:mix_test_observer, "~> 0.1", only: [:dev, :test], runtime: false}
     ]
   end
 

@@ -28,6 +28,9 @@ defmodule SyncCentralWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import SyncCentralWeb.ConnCase
+
+      # Import helpers
+      import SyncCentral.TestHelper
     end
   end
 

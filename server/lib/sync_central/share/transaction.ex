@@ -8,7 +8,7 @@ defmodule SyncCentral.Share.Transaction do
     belongs_to :user, User
     field :sql, :string
 
-    timestamps(type: :utc_datetime)
+    timestamps(type: :utc_datetime_usec, updated_at: false)
   end
 
   @doc false

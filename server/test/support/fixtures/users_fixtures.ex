@@ -7,6 +7,7 @@ defmodule SyncCentral.UsersFixtures do
   alias SyncCentral.Repo
   alias SyncCentral.Users.User
   alias SyncCentral.Users.UserToken
+  alias SyncCentral.Users.UserDevice
 
   @doc """
   Generate a user.
@@ -39,6 +40,18 @@ defmodule SyncCentral.UsersFixtures do
       |> Repo.insert()
 
     {user_token, raw_token}
+  end
+
+  @doc """
+  Generate a user_device.
+  """
+  def user_device_fixture(attrs \\ %{}) do
+    {:ok, user_device} =
+      %UserDevice{name: "my_test"}
+      |> Map.merge(attrs)
+      |> Repo.insert()
+
+    user_device
   end
 
   defp gen_test_token(token) do

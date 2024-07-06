@@ -4,10 +4,20 @@ defmodule SyncCentral.ShareFixtures do
   entities via the `SyncCentral.Share` context.
   """
 
-  # @doc """
-  # Generate a transaction.
-  # """
-  # def transaction_fixture(attrs \\ %{}) do
-  #   nil
-  # end
+  alias SyncCentral.Repo
+  alias SyncCentral.Share.Transaction
+
+  @doc """
+  Generate a transaction.
+  """
+  def transaction_fixture(attrs \\ %{}) do
+    {:ok, transaction} =
+      %Transaction{
+        sql: "my sql"
+      }
+      |> Map.merge(attrs)
+      |> Repo.insert()
+
+    transaction
+  end
 end

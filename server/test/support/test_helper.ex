@@ -9,9 +9,7 @@ defmodule SyncCentral.TestHelper do
   def setup_token(%{conn: conn, user: user}) do
     {_user_token, raw_token} = user_token_fixture(%{user_id: user.id})
 
-    {:ok,
-     conn:
-       put_req_header(conn, "authorization", "Bearer " <> raw_token)}
+    {:ok, conn: put_req_header(conn, "authorization", "Bearer " <> raw_token)}
   end
 
   def setup_token(ctx) do

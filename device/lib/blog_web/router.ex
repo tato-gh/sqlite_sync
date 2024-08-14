@@ -25,6 +25,10 @@ defmodule BlogWeb.Router do
 
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/show/edit", PostLive.Show, :edit
+
+    live "/setting", SettingLive.Show, :show
+    live "/setting/apply", SettingLive.Show, :apply
+    live "/setting/new", SettingLive.Show, :new
   end
 
   # Other scopes may use custom stacks.

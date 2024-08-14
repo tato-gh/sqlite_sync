@@ -1,0 +1,43 @@
+<.header class="mb-4">
+  Device
+  <:subtitle>This is the device information.</:subtitle>
+</.header>
+
+<div :if={is_nil(@device)}>
+  <.link patch={~p"/setting/apply"}>
+    <.button>Apply Connection</.button>
+  </.link>
+
+  <.link patch={~p"/setting/new"}>
+    <.button>New Setting</.button>
+  </.link>
+</div>
+
+<div :if={@device}>
+  <p class="my-2">Setting is already finished.</p>
+  <p class="text-sm">Identity: <%= @device.identity %></p>
+  <p class="text-sm mb-2">Passphrase: SECRET</p>
+
+  <.link phx-click="delete">
+    <.button>Delete</.button>
+  </.link>
+</div>
+
+
+<.modal :if={@live_action == :apply} id="setting-modal" show on_cancel={JS.patch(~p"/setting")}>
+  <.live_component
+    module={BlogWeb.SettingLive.ApplyFormComponent}
+    id="apply-form-component"
+    action={@live_action}
+    patch={~p"/setting"}
+  />
+</.modal>
+
+<.modal :if={@live_action == :new} id="setting-modal" show on_cancel={JS.patch(~p"/setting")}>
+  <.live_component
+    module={BlogWeb.SettingLive.FormComponent}
+    id="setting-form-component"
+    action={@live_action}
+    patch={~p"/setting"}
+  />
+</.modal>

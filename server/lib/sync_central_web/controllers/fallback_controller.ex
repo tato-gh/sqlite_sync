@@ -21,4 +21,12 @@ defmodule SyncCentralWeb.FallbackController do
     |> put_view(html: SyncCentralWeb.ErrorHTML, json: SyncCentralWeb.ErrorJSON)
     |> render(:"404")
   end
+
+  def call(conn, {:error, message}) do
+    conn
+    |> assign(:message, message)
+    |> put_status(:bad_request)
+    |> put_view(html: SyncCentralWeb.ErrorHTML, json: SyncCentralWeb.ErrorJSON)
+    |> render(:"400")
+  end
 end

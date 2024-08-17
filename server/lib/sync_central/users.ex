@@ -39,6 +39,18 @@ defmodule SyncCentral.Users do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  """
+  def get_user_by_email!(email) do
+    Repo.get_by!(User, email: email)
+  end
+
+  @doc """
+  """
+  def valid_user?(user, access_key) do
+    User.valid_access_key?(user, access_key)
+  end
+
+  @doc """
   Registers a user.
   """
   def register_user(email, access_key) do

@@ -14,6 +14,9 @@ defmodule SyncCentralWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :api_user do
     plug :fetch_api_user
   end
 
@@ -23,9 +26,14 @@ defmodule SyncCentralWeb.Router do
     get "/", PageController, :home
   end
 
-  # Other scopes may use custom stacks.
   scope "/api", SyncCentralWeb.API do
     pipe_through :api
+
+    post "/login", SessionController, :create
+  end
+
+  scope "/api", SyncCentralWeb.API do
+    pipe_through [:api, :api_user]
 
     scope "/share", Share do
       resources "/transactions", TransactionController, only: [:create]

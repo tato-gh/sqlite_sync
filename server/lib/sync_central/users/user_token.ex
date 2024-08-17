@@ -9,7 +9,7 @@ defmodule SyncCentral.Users.UserToken do
   @hash_algorithm :sha256
   @rand_size 32
 
-  @api_validity_in_days 1
+  @api_validity_in_days 10
 
   schema "users_tokens" do
     field :token, :binary

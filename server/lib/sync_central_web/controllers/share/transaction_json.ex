@@ -2,6 +2,14 @@ defmodule SyncCentralWeb.API.Share.TransactionJSON do
   alias SyncCentral.Share.Transaction
 
   @doc """
+  Renders multi transactions.
+  """
+  def index(%{transactions: transactions}) do
+    multi_data = Enum.map(transactions, &data/1)
+    %{data: multi_data}
+  end
+
+  @doc """
   Renders a single transaction.
   """
   def show(%{transaction: transaction}) do

@@ -12,6 +12,45 @@ defmodule SyncCentralWeb.Share.TransactionControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
+  describe "list transactions" do
+    setup do
+      user = user_fixture()
+      user_device = user_device_fixture(%{user_id: user.id, name: "my_device"})
+      {:ok, user: user, user_device: user_device}
+    end
+
+    setup [:setup_token]
+
+    test "renders transactions", %{conn: conn, user: user} do
+      %{id: id_1} =
+        _transaction_1 =
+        transaction_fixture(%{user_id: user.id, inserted_at: ~U[2024-01-02 10:00:00.123456Z]})
+
+      %{id: id_2} =
+        transaction_2 =
+        transaction_fixture(%{user_id: user.id, inserted_at: ~U[2024-01-03 10:00:00.123456Z]})
+
+      %{id: id_3} =
+        _transaction_3 =
+        transaction_fixture(%{user_id: user.id, inserted_at: ~U[2024-01-01 10:00:00.123456Z]})
+
+      conn =
+        get(conn, ~p"/api/share/transactions", device: %{name: "my_device"})
+
+      assert [%{"id" => ^id_3}, %{"id" => ^id_1}, %{"id" => ^id_2}] =
+               json_response(conn, 200)["data"]
+
+      user_device = Repo.get_by(UserDevice, user_id: user.id, name: "my_device")
+      assert user_device.retrieved_at == transaction_2.inserted_at
+
+      # second time
+      conn =
+        get(conn, ~p"/api/share/transactions", device: %{name: "my_device"})
+
+      assert [] = json_response(conn, 200)["data"]
+    end
+  end
+
   describe "create transaction" do
     setup do
       user = user_fixture()

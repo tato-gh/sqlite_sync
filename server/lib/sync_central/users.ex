@@ -8,6 +8,7 @@ defmodule SyncCentral.Users do
   alias SyncCentral.Repo
   alias SyncCentral.Users.User
   alias SyncCentral.Users.UserToken
+  alias SyncCentral.Users.UserDevice
 
   @doc """
   Returns the list of users.
@@ -80,5 +81,20 @@ defmodule SyncCentral.Users do
     else
       _ -> :error
     end
+  end
+
+  @doc """
+  Updates user_devices.retrieved_at by given time.
+  """
+  def touch_user_device_retrieved_at(user_device, timestamp) do
+    Ecto.Changeset.change(user_device, %{retrieved_at: timestamp})
+    |> Repo.update()
+  end
+
+  @doc """
+  Gets user_device by condition
+  """
+  def get_user_device_by!(condition) do
+    Repo.get_by!(UserDevice, condition)
   end
 end

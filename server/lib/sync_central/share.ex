@@ -23,6 +23,21 @@ defmodule SyncCentral.Share do
   end
 
   @doc """
+  List user_device unread transactions
+  """
+  def list_unread_transactions(user_device) do
+    retrieved_at = user_device.retrieved_at || ~U[2000-01-01 00:00:00.123456Z]
+
+    from(
+      q in Transaction,
+      where: q.user_id == ^user_device.user_id,
+      where: q.inserted_at > ^retrieved_at,
+      order_by: {:asc, q.inserted_at}
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Creates transaction with given user.
   """
   def create_user_transaction(user, user_device, attrs) do
@@ -57,9 +72,10 @@ defmodule SyncCentral.Share do
         Repo.get_by!(UserDevice, condition)
 
       transaction ->
-        # 同期していない可能性があるので、同期済みかを条件に加える
+        # 同期済みかを条件に加える
+        # 最新まで同期していない端末は、同期可能な状態ではない
         condition = Keyword.put(condition, :retrieved_at, transaction.inserted_at)
-        Repo.get_by!(UserDevice, Keyword.put(condition, :user_id, user.id))
+        Repo.get_by!(UserDevice, condition)
     end
   end
 end

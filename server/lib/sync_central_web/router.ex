@@ -36,7 +36,7 @@ defmodule SyncCentralWeb.Router do
     pipe_through [:api, :api_user]
 
     scope "/share", Share do
-      resources "/transactions", TransactionController, only: [:create]
+      resources "/transactions", TransactionController, only: [:index, :create]
     end
   end
 

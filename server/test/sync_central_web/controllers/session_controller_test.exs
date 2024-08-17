@@ -25,6 +25,6 @@ defmodule SyncCentralWeb.API.SessionControllerTest do
         password: "invalid"
       })
 
-    assert %{"message" => "Invalid password"} = json_response(conn, 400)
+    assert %{"errors" => %{"message" => "Invalid password"}} = json_response(conn, 400)
   end
 end

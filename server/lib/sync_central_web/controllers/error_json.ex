@@ -17,8 +17,10 @@ defmodule SyncCentralWeb.ErrorJSON do
   # "Not Found".
   def render(template, assigns) do
     %{
-      errors: %{detail: Phoenix.Controller.status_message_from_template(template)},
-      message: Map.get(assigns, :message)
+      errors: %{
+        detail: Phoenix.Controller.status_message_from_template(template),
+        message: Map.get(assigns, :message)
+      }
     }
   end
 end

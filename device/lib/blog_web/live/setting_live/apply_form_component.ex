@@ -8,7 +8,7 @@ defmodule BlogWeb.SettingLive.ApplyFormComponent do
     <div id={@id}>
       <.header>
         Apply device identity for this device
-        <:subtitle>Use this form to get identity to send your account information.</:subtitle>
+        <:subtitle>get identity to send your account information.</:subtitle>
       </.header>
 
       <.simple_form
@@ -18,7 +18,7 @@ defmodule BlogWeb.SettingLive.ApplyFormComponent do
         phx-submit="save"
       >
         <.input field={@form[:email]} type="text" label="Email" />
-        <.input field={@form[:access_token]} type="password" label="AccessToken" />
+        <.input field={@form[:password]} type="password" label="Password" />
         <:actions>
           <.button phx-disable-with="Sending...">Apply</.button>
         </:actions>
@@ -32,7 +32,7 @@ defmodule BlogWeb.SettingLive.ApplyFormComponent do
      socket
      |> assign(assigns)
      |> assign_new(:form, fn ->
-       to_form(%{"email" => "", "access_token" => ""})
+       to_form(%{"email" => "", "password" => ""})
      end)}
   end
 

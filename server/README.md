@@ -9,6 +9,15 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+## Setup examples
+
+```
+{:ok, user} = SyncCentral.Users.register_user("test@example.com", "test")
+
+SyncCentral.Users.create_user_device(user, "device_1")
+SyncCentral.Users.create_user_device(user, "device_2")
+```
+
 ## Learn more
 
   * Official website: https://www.phoenixframework.org/

@@ -5,10 +5,11 @@ defmodule Blog.Setting do
 
   alias Blog.Setting.Device
 
-  @file_name "setting.json"
+  @setting_file_name "setting.json"
+  @access_token_file_name "access_token"
 
   def get_setting do
-    path = get_path()
+    path = get_setting_path()
 
     with {:ok, json} <- File.read(path),
          {:ok, data} <- Jason.decode(json) do
@@ -24,16 +25,35 @@ defmodule Blog.Setting do
   end
 
   def create_setting(attrs) do
-    path = get_path()
+    path = get_setting_path()
     {:ok, json} = Jason.encode(attrs)
     File.write(path, json)
   end
 
   def delete_setting do
-    File.rm_rf(get_path())
+    get_setting_path() |> File.rm_rf()
   end
 
-  defp get_path do
-    Path.join([:code.priv_dir(:blog), @file_name])
+  def get_access_token do
+    path = get_access_token_path()
+
+    with {:ok, token} <- File.read(path) do
+      token
+    else
+      _ -> nil
+    end
+  end
+
+  def create_access_token(access_token) do
+    path = get_access_token_path()
+    File.write(path, access_token)
+  end
+
+  defp get_setting_path do
+    Path.join([:code.priv_dir(:blog), @setting_file_name])
+  end
+
+  defp get_access_token_path do
+    Path.join([:code.priv_dir(:blog), @access_token_file_name])
   end
 end

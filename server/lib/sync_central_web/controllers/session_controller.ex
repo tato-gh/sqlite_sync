@@ -6,7 +6,7 @@ defmodule SyncCentralWeb.API.SessionController do
   action_fallback SyncCentralWeb.FallbackController
 
   def create(conn, params) do
-    with user <- Users.get_user_by_email!(params["email"]),
+    with user <- Users.get_user_by_email(params["email"]),
          true <- Users.valid_user?(user, params["password"]),
          token <- Users.create_user_api_token(user) do
       conn

@@ -41,8 +41,8 @@ defmodule SyncCentral.Users do
 
   @doc """
   """
-  def get_user_by_email!(email) do
-    Repo.get_by!(User, email: email)
+  def get_user_by_email(email) do
+    Repo.get_by(User, email: email)
   end
 
   @doc """
@@ -96,5 +96,9 @@ defmodule SyncCentral.Users do
   """
   def get_user_device_by!(condition) do
     Repo.get_by!(UserDevice, condition)
+  end
+
+  def create_user_device(user, name) do
+    Repo.insert(%UserDevice{user_id: user.id, name: name})
   end
 end

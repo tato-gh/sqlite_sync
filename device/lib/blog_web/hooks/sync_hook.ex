@@ -25,6 +25,10 @@ defmodule BlogWeb.SyncHook do
     {:cont, assign(socket, :require_login, false)}
   end
 
+  def on_mount(:prepare_cryptor, _params, _sesison, socket) do
+    {:cont, attach_hook(socket, :cryptor, :handle_info, &handle_info/2)}
+  end
+
   def on_mount(:fetch_transactions, _params, _sesison, %{
       assigns: %{device: device, access_token: nil}
     } = socket) when not is_nil(device) do
@@ -49,5 +53,9 @@ defmodule BlogWeb.SyncHook do
       socket
       |> assign(:require_login, false)
       |> assign(:access_token, access_token)}
+  end
+
+  defp handle_info({:cryptor_setup, cryptor_id}, socket) do
+    {:cont, assign(socket, :cryptor, cryptor_id)}
   end
 end

@@ -42,3 +42,12 @@
     id="component-login"
   />
 </.modal>
+
+<%= if @access_token do %>
+  <%= live_render(@socket,
+    BlogWeb.CryptorLive,
+    id: "cryptor",
+    session: %{"device" => @device},
+    sticky: true) %>
+<% end %>
+

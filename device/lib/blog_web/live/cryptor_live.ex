@@ -22,7 +22,7 @@ defmodule BlogWeb.CryptorLive do
 
   def mount(_params, session, socket) do
     if connected?(socket) do
-      send(socket.root_pid, {:cryptor_setup, self()})
+      send(socket.transport_pid, {:cryptor_setup, self()})
     end
 
     {:ok,
@@ -30,13 +30,18 @@ defmodule BlogWeb.CryptorLive do
       layout: false}
   end
 
+  def handle_info({:cryption_request, raw, options}, socket) do
+    {:noreply,
+      push_event(socket, "encode", %{raw: raw, options: options})}
+  end
+
   def handle_event("test", _params, socket) do
     {:noreply,
-      push_event(socket, "encode", %{raw: "test", return_to_push: "encrypted"})}
+      push_event(socket, "encode", %{raw: "test"})}
   end
 
   def handle_event("encrypted", params, socket) do
-    IO.inspect(params, label: "=================== DEBUG")
+    send(socket.transport_pid, {:encrypted, params["encrypted"], params["options"]})
 
     {:noreply, socket}
   end

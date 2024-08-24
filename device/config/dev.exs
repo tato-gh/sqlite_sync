@@ -5,7 +5,8 @@ config :blog, Blog.Repo,
   database: Path.expand("../blog_dev.db", __DIR__),
   pool_size: 5,
   stacktrace: true,
-  show_sensitive_data_on_connection_error: true
+  show_sensitive_data_on_connection_error: true,
+  telemetry_prefix: [:blog, :repo]
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

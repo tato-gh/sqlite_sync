@@ -47,7 +47,6 @@
   <%= live_render(@socket,
     BlogWeb.CryptorLive,
     id: "cryptor",
-    session: %{"device" => @device},
-    sticky: true) %>
+    session: %{"device" => @device}) %>
 <% end %>
 

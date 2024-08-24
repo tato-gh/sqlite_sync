@@ -86,14 +86,10 @@ const Cryption = {
       // 初期化ベクトルと暗号文の結合
       const encrypted = ivBase64String + "-" + encryptedBase64String
 
-      if(payload.return_to_push) {
-        this.pushEvent(
-          payload.return_to_push,
-          {
-            encrypted
-          }
-        )
-      }
+      this.pushEvent("encrypted", {
+        encrypted: encrypted,
+        options: payload.options
+      })
     })
   }
 }

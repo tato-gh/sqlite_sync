@@ -52,7 +52,7 @@ defmodule BlogWeb.PostLive.FormComponent do
   defp save_post(socket, :edit, post_params) do
     case Posts.update_post(socket.assigns.post, post_params) do
       {:ok, post} ->
-        notify_parent({:saved, post})
+        notify_parent(socket.transport_pid, {:saved, post})
 
         {:noreply,
          socket
@@ -67,7 +67,7 @@ defmodule BlogWeb.PostLive.FormComponent do
   defp save_post(socket, :new, post_params) do
     case Posts.create_post(post_params) do
       {:ok, post} ->
-        notify_parent({:saved, post})
+        notify_parent(self(), {:saved, post})
 
         {:noreply,
          socket
@@ -79,5 +79,5 @@ defmodule BlogWeb.PostLive.FormComponent do
     end
   end
 
-  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+  defp notify_parent(pid, msg), do: send(pid, {__MODULE__, msg})
 end

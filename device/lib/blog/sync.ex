@@ -23,4 +23,19 @@ defmodule Blog.Sync do
 
     Server.post_transaction(device, access_token, encrypted)
   end
+
+  def get_transactions do
+    device = Setting.get_setting()
+    access_token = Setting.get_access_token()
+
+    Server.list_transactions(device, access_token)
+    |> case do
+      {:ok, %{body: %{"data" => list}}} ->
+        encrypted_list = Enum.map(list, & &1["sql"])
+        Phoenix.PubSub.broadcast(Blog.PubSub, "retrieve", {:encrypted_transactions, encrypted_list})
+
+      _ ->
+        []
+    end
+  end
 end

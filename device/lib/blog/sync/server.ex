@@ -20,4 +20,14 @@ defmodule Blog.Sync.Server do
       transaction: %{sql: encrypted}
     })
   end
+
+  def list_transactions(device, access_token) do
+    middleware = @middleware ++ [
+      {Tesla.Middleware.Headers, [{"authorization", "Bearer " <> access_token}]}
+    ]
+
+    Tesla.client(middleware)
+    |> Tesla.get("/api/share/transactions", query: [{:device, device.identity}]
+    )
+  end
 end

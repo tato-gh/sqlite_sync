@@ -20,14 +20,14 @@ defmodule BlogWeb.SyncHook do
     {:cont, assign(socket, :access_token, access_token)}
   end
 
-  def on_mount(:fetch_transactions, _params, _sesison, %{
+  def on_mount(:maybe_require_login, _params, _sesison, %{
       assigns: %{device: nil}
     } = socket) do
     # アカウント設定をしていないので特になにもしない
     {:cont, assign(socket, :require_login, false)}
   end
 
-  def on_mount(:fetch_transactions, _params, _sesison, %{
+  def on_mount(:maybe_require_login, _params, _sesison, %{
       assigns: %{device: device, access_token: nil}
     } = socket) when not is_nil(device) do
     # アクセストークンがないためログインを促す
@@ -39,8 +39,7 @@ defmodule BlogWeb.SyncHook do
     {:cont, socket}
   end
 
-  def on_mount(:fetch_transactions, _params, _sesison, socket) do
-    # TODO: 同期を行う
+  def on_mount(:maybe_require_login, _params, _sesison, socket) do
     {:cont, assign(socket, :require_login, false)}
   end
 

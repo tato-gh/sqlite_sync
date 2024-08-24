@@ -14,7 +14,7 @@ services:
     command: "tail -f /dev/null"
     # command: "elixir --sname server@web --cookie server -S mix phx.server"
 
-  device_a:
+  device:
     image: phx_sqlite_sync:1.7
     ports:
       - 4002:4000
@@ -22,15 +22,6 @@ services:
       - ./device:/work
     working_dir: /work
     command: "tail -f /dev/null"
-
-  # device_b:
-  #   image: phx_sqlite_sync:1.7
-  #   ports:
-  #     - 4003:4000
-  #   volumes:
-  #     - device:/work
-  #   working_dir: /work
-  #   command: "tail -f /dev/null"
 
   db:
     image: postgres:15.3-alpine

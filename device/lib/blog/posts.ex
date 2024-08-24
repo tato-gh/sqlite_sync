@@ -101,4 +101,8 @@ defmodule Blog.Posts do
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
   end
+
+  def retrieve_transaction(sql) do
+    Ecto.Adapters.SQL.query(Repo, sql, [])
+  end
 end

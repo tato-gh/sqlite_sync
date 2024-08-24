@@ -18,7 +18,8 @@ defmodule SyncCentralWeb.API.Share.TransactionJSON do
 
   defp data(%Transaction{} = transaction) do
     %{
-      id: transaction.id
+      id: transaction.id,
+      sql: transaction.sql
     }
   end
 end

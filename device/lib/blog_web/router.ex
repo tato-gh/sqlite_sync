@@ -21,8 +21,8 @@ defmodule BlogWeb.Router do
   live_session :default, on_mount: [
     {SyncHook, :load_setting},
     {SyncHook, :load_access_token},
-    {SyncHook, :fetch_transactions},
-    {SyncHook, :prepare_cryptor}
+    {SyncHook, :prepare_cryptor},
+    {SyncHook, :maybe_require_login}
   ] do
     scope "/", BlogWeb do
       pipe_through :browser

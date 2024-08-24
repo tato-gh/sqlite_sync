@@ -7,7 +7,7 @@ defmodule SyncCentralWeb.API.Share.TransactionController do
 
   action_fallback SyncCentralWeb.FallbackController
 
-  def index(conn, %{"device" => %{"name" => device_name}}) do
+  def index(conn, %{"device" => device_name}) do
     %{current_user: current_user} = conn.assigns
 
     with user_device <- get_user_device_by!(current_user, device_name) do

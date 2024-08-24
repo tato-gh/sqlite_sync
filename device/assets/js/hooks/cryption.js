@@ -53,7 +53,7 @@ const genKey = async function(salt_raw, pass_raw) {
 
 const Cryption = {
   mounted() {
-    const salt = this.el.dataset.salt
+    const salt = 'keysalt'
     const pass = this.el.dataset.pass
     delete this.el.dataset.salt
     delete this.el.dataset.pass
@@ -61,7 +61,6 @@ const Cryption = {
     // setup
     genKey(salt, pass)
     .then(key => {
-      console.log(key)
       this.key = key
     })
 
@@ -88,6 +87,34 @@ const Cryption = {
 
       this.pushEvent("encrypted", {
         encrypted: encrypted,
+        options: payload.options
+      })
+    })
+
+    this.handleEvent("decode", async (payload) => {
+      const splits = payload.encrypted.split("-")
+      const ivBase64String = splits[0]
+      const encryptedBase64String = splits[1]
+
+      // Base64エンコードされた文字列 -> Binary String
+      const ivBytes = atob(ivBase64String)
+      const encryptedBytes = atob(encryptedBase64String)
+
+      // Binary String -> Typed array
+      const iv = Uint8Array.from(ivBytes.split(''), char => char.charCodeAt(0))
+      const encryptedData = Uint8Array.from(encryptedBytes.split(''), char => char.charCodeAt(0))
+
+      // 復号化
+      const decryptedArrayBuffer = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        this.key,
+        encryptedData
+      )
+
+      decrypted = (new TextDecoder()).decode(new Uint8Array(decryptedArrayBuffer))
+
+      this.pushEvent("decrypted", {
+        raw: decrypted,
         options: payload.options
       })
     })

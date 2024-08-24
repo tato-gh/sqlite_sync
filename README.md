@@ -1,5 +1,9 @@
 # sqlite_sync
 
+This is a study for synchronizing encrypted sql between devices (SQLite) via the server side.
+
+Please note that the code is not pretty.
+
 ## Install
 
 Build image

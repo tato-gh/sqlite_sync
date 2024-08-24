@@ -1,17 +1,23 @@
 defmodule Blog.Sync.Server do
-  use Tesla
-
-  plug Tesla.Middleware.BaseUrl, "http://server:4000/"
-  plug Tesla.Middleware.JSON
-
-  # TODO
-  plug Tesla.Middleware.Headers, [{"authorization", "token xyz"}]
+  @middleware [
+    {Tesla.Middleware.BaseUrl, "http://server:4000/"},
+    Tesla.Middleware.JSON
+  ]
 
   def login(params) do
-    post("/api/login", params)
+    Tesla.client(@middleware)
+    |> Tesla.post("/api/login", params)
   end
 
-  #   with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
-  #        {:ok, user} <- Users.fetch_user_by_api_token(token) do
-  # end
+  def post_transaction(device, access_token, encrypted) do
+    middleware = @middleware ++ [
+      {Tesla.Middleware.Headers, [{"authorization", "Bearer " <> access_token}]}
+    ]
+
+    Tesla.client(middleware)
+    |> Tesla.post("/api/share/transactions", %{
+      device: %{name: device.identity},
+      transaction: %{sql: encrypted}
+    })
+  end
 end

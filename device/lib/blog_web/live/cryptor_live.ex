@@ -23,6 +23,7 @@ defmodule BlogWeb.CryptorLive do
   def mount(_params, session, socket) do
     if connected?(socket) do
       send(socket.transport_pid, {:cryptor_setup, self()})
+      Phoenix.PubSub.subscribe(Blog.PubSub, "cud_query")
     end
 
     {:ok,
@@ -30,9 +31,9 @@ defmodule BlogWeb.CryptorLive do
       layout: false}
   end
 
-  def handle_info({:cryption_request, raw, options}, socket) do
+  def handle_info({:transaction, raw_sql}, socket) do
     {:noreply,
-      push_event(socket, "encode", %{raw: raw, options: options})}
+      push_event(socket, "encode", %{raw: raw_sql, options: %{}})}
   end
 
   def handle_event("test", _params, socket) do
@@ -41,7 +42,7 @@ defmodule BlogWeb.CryptorLive do
   end
 
   def handle_event("encrypted", params, socket) do
-    send(socket.transport_pid, {:encrypted, params["encrypted"], params["options"]})
+    Blog.Sync.send_transaction(params["encrypted"])
 
     {:noreply, socket}
   end

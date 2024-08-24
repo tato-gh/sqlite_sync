@@ -24,7 +24,7 @@ defmodule Blog.Application do
     ]
 
     # telemetry attach for repo
-    :ok = :telemetry.attach("repo-log", [:blog, :repo, :query], &BlogWeb.SyncHook.handle_event/4, nil)
+    :ok = :telemetry.attach("repo-log", [:blog, :repo, :query], &Blog.RepoLog.handle_event/4, nil)
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
